@@ -26,13 +26,13 @@ class MyApp extends StatelessWidget {
       title: '',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2E7D6E), brightness: Brightness.light),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFFFC107), brightness: Brightness.light),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
           centerTitle: true,
           elevation: 0,
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 2,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
