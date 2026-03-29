@@ -6,43 +6,44 @@ This project uses **Git** and **GitHub** so you and your friend can share code a
 
 ## First-time setup (you)
 
-1. **Create a GitHub repository**
-   - Go to [github.com](https://github.com) and sign in (or create an account).
-   - Click **New repository** (green button).
-   - Name it (e.g. `doga_mustafa_app_1`), leave it **empty** (no README, no .gitignore).
-   - Choose **Private** if you don’t want it public.
+1. **Create the GitHub repository** (one-time)
+   - Open: **https://github.com/new?name=doga_mustafa_app_1**
+   - Leave it **empty** (no README, no .gitignore). Choose **Private** if you want.
    - Click **Create repository**.
 
-2. **Connect this project and push**
-   - In the project folder, run (replace `YOUR_USERNAME` and `REPO_NAME` with your GitHub repo):
-
+2. **Push your code** (remote is already set to `dogamustafaapp-arch/doga_mustafa_app_1`):
    ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/REPO_NAME.git
-   git add .
-   git commit -m "Initial commit"
    git push -u origin main
    ```
-
-   - If GitHub asks for login, use your username and a **Personal Access Token** (not your password):  
-     GitHub → Settings → Developer settings → Personal access tokens → Generate new token.
+   - If GitHub asks for login, use username `dogamustafaapp-arch` and a **Personal Access Token** (not your password):  
+     GitHub → Settings → Developer settings → Personal access tokens → Generate new token (with `repo` scope).
 
 ---
 
 ## First-time setup (your friend)
 
-1. **Clone the repo**
-   - Install [Git](https://git-scm.com/) if needed.
-   - Run (replace with your repo URL):
+**Do not create a new project.** Clone the repo so you get the same code and stay in sync.
 
+1. **You add him as collaborator** (one-time)  
+   Repo on GitHub → **Settings** → **Collaborators** → **Add people** → enter his GitHub username → he accepts the invite.
+
+2. **He clones the repo**
+   - Open **Terminal** (or Cursor’s terminal). Pick a folder (e.g. Desktop or a projects folder).
+   - Run:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/REPO_NAME.git
-   cd REPO_NAME
+   git clone https://github.com/dogamustafaapp-arch/doga_mustafa_app_1.git
+   cd doga_mustafa_app_1
    ```
 
-2. **Install Flutter dependencies**
+3. **Open in Cursor**  
+   **File → Open Folder** → choose the `doga_mustafa_app_1` folder he just cloned. That’s his project.
+
+4. **Install Flutter dependencies** (in Cursor terminal or any terminal inside the project):
    ```bash
    flutter pub get
    ```
+
+He’s ready. He uses **Daily workflow** below to pull your changes and push his.
 
 ---
 
