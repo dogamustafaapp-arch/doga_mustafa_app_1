@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app_theme.dart';
+
 class ActivityVotePage extends StatefulWidget {
   const ActivityVotePage({
     super.key,
@@ -40,39 +42,44 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
   @override
   Widget build(BuildContext context) {
     final names = widget.personNames;
+    final tt = Theme.of(context).textTheme;
+    final bottomInset = MediaQuery.paddingOf(context).bottom + 88;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        toolbarHeight: 48,
-      ),
+      backgroundColor: AppPalette.charcoal,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.fromLTRB(24, 20, 24, bottomInset),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Select a person and rate the activity you did together.',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                'Vote',
+                style: tt.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: -0.5,
+                  color: Colors.white,
+                ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 8),
+              Text(
+                'Pick who you were with, what you did, and how it felt (1–5).',
+                style: tt.bodyMedium?.copyWith(
+                  color: AppPalette.mutedNav,
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 28),
               DropdownButtonFormField<String?>(
                 value: _selectedPerson,
-                decoration: InputDecoration(
-                  labelText: 'Select person',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  prefixIcon: const Icon(Icons.person_rounded),
+                decoration: const InputDecoration(
+                  labelText: 'Who',
+                  prefixIcon: Icon(Icons.person_outline_rounded),
                 ),
                 items: [
-                  const DropdownMenuItem<String>(
+                  const DropdownMenuItem<String?>(
                     value: null,
-                    child: Text('— Select —'),
+                    child: Text('Choose someone'),
                   ),
                   ...names.map(
                     (name) => DropdownMenuItem(
@@ -85,31 +92,41 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               ),
               const SizedBox(height: 16),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Activity',
                   hintText: 'e.g. Coffee, walk',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  prefixIcon: const Icon(Icons.directions_walk_rounded),
+                  prefixIcon: Icon(Icons.celebration_outlined),
                 ),
               ),
               const SizedBox(height: 24),
               Text(
-                'Score (1–5)',
-                style: Theme.of(context).textTheme.titleSmall,
+                'How was it?',
+                style: tt.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
+              Text(
+                '1 = not great · 5 = amazing',
+                style: tt.bodySmall?.copyWith(color: AppPalette.mutedNav),
+              ),
+              const SizedBox(height: 14),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(5, (i) {
                   final score = i + 1;
-                  final isSelected = _selectedScore == score;
-                  return FilterChip(
-                    label: Text('$score'),
-                    selected: isSelected,
-                    onSelected: (_) =>
-                        setState(() => _selectedScore = isSelected ? null : score),
+                  final selected = _selectedScore == score;
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: i < 4 ? 8 : 0),
+                      child: _ScorePill(
+                        score: score,
+                        selected: selected,
+                        onTap: () => setState(
+                          () => _selectedScore = selected ? null : score,
+                        ),
+                      ),
+                    ),
                   );
                 }),
               ),
@@ -117,15 +134,47 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               FilledButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.thumb_up_rounded),
-                label: const Text('Vote'),
-                style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
+                label: const Text('Save vote'),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ScorePill extends StatelessWidget {
+  const _ScorePill({
+    required this.score,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final int score;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final tt = Theme.of(context).textTheme;
+
+    return Material(
+      color: selected ? AppPalette.blueGrad : AppPalette.cardGrey,
+      borderRadius: BorderRadius.circular(14),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: SizedBox(
+          height: 48,
+          child: Center(
+            child: Text(
+              '$score',
+              style: tt.titleMedium?.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
       ),
