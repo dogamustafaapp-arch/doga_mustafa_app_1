@@ -48,13 +48,13 @@ class BondsCategoriesService {
   /// Returns error message if invalid, null if saved.
   Future<String?> addCustomRelationship(String displayName) async {
     final slug = slugify(displayName);
-    if (slug.isEmpty) return 'Enter a name';
+    if (slug.isEmpty) return 'Bir isim girin';
     if (reservedSlugs.contains(slug)) {
-      return 'That name is reserved';
+      return 'Bu ad ayrılmış';
     }
     final prefs = await SharedPreferences.getInstance();
     final list = List<String>.from(prefs.getStringList(_kCustomRels) ?? []);
-    if (list.contains(slug)) return 'Category already exists';
+    if (list.contains(slug)) return 'Bu kategori zaten var';
     list.add(slug);
     list.sort();
     await prefs.setStringList(_kCustomRels, list);

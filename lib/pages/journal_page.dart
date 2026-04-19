@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
 
-/// Past activities and notes — placeholder content for now; data layer to be wired later.
+/// Geçmiş aktiviteler ve notlar — veri katmanı sonra bağlanacak.
 class JournalPage extends StatefulWidget {
   const JournalPage({super.key});
 
@@ -15,19 +15,19 @@ class _JournalPageState extends State<JournalPage> {
 
   static const List<({String title, String subtitle, String day})> _demoEntries = [
     (
-      title: 'Coffee with Alex',
-      subtitle: 'Chat · Connection',
-      day: '2 days ago',
+      title: 'Alex ile kahve',
+      subtitle: 'Sohbet · Bağ',
+      day: '2 gün önce',
     ),
     (
-      title: 'Sam — walk',
-      subtitle: 'Movement · Quality time',
-      day: '5 days ago',
+      title: 'Sam — yürüyüş',
+      subtitle: 'Hareket · Kaliteli zaman',
+      day: '5 gün önce',
     ),
     (
-      title: 'Jordan, phone call',
-      subtitle: 'Check-in',
-      day: '1 week ago',
+      title: 'Jordan, telefon',
+      subtitle: 'Gün içi kontrol',
+      day: '1 hafta önce',
     ),
   ];
 
@@ -52,7 +52,7 @@ class _JournalPageState extends State<JournalPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
                 child: Text(
-                  'Journal',
+                  'Günlük',
                   style: tt.headlineMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.4,
@@ -65,7 +65,7 @@ class _JournalPageState extends State<JournalPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
                 child: Text(
-                  'Past activities',
+                  'Geçmiş aktiviteler',
                   style: tt.titleSmall?.copyWith(
                     color: AppPalette.mutedNav,
                     fontWeight: FontWeight.w600,
@@ -93,7 +93,7 @@ class _JournalPageState extends State<JournalPage> {
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 28, 20, 12),
                 child: Text(
-                  'My notes',
+                  'Notlarım',
                   style: tt.titleSmall?.copyWith(
                     color: AppPalette.mutedNav,
                     fontWeight: FontWeight.w600,
@@ -110,7 +110,8 @@ class _JournalPageState extends State<JournalPage> {
                   maxLines: 8,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: 'How are you feeling today? (saving not wired yet)',
+                    hintText:
+                        'Bugün nasıl hissediyorsun? (kaydetme henüz yok)',
                     hintStyle: TextStyle(
                       color: AppPalette.mutedNav.withValues(alpha: 0.85),
                     ),

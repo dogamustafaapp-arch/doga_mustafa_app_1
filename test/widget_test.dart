@@ -12,9 +12,9 @@ void main() {
     await Firebase.initializeApp();
   });
 
-  testWidgets('Bonds app builds without throwing', (WidgetTester tester) async {
+  testWidgets('Bağlar uygulaması hatasız açılır', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
     await tester.pump();
-    expect(find.text('Bonds'), findsWidgets);
+    expect(find.text('Bağlar'), findsWidgets);
   });
 }

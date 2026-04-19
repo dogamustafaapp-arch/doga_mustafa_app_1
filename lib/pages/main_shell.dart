@@ -180,7 +180,7 @@ class _BondsBottomBar extends StatelessWidget {
             child: _NavSlot(
               selected: currentIndex == 0,
               icon: Icons.blur_circular_rounded,
-              label: 'Bonds',
+              label: 'Bağlar',
               activeColor: AppPalette.tealNav,
               onTap: () => onSelect(0),
               textTheme: tt,
@@ -191,7 +191,7 @@ class _BondsBottomBar extends StatelessWidget {
             child: _NavSlot(
               selected: currentIndex == 2,
               icon: Icons.auto_stories_rounded,
-              label: 'Journal',
+              label: 'Günlük',
               activeColor: AppPalette.tealNav,
               onTap: () => onSelect(2),
               textTheme: tt,

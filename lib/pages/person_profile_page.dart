@@ -14,10 +14,20 @@ class PersonProfilePage extends StatelessWidget {
 
   final Person person;
 
-  String get _relationshipLabel =>
-      BondsCategoriesService.prettyLabelForSlug(
-        person.relationship.replaceAll('-', '_'),
-      );
+  String get _relationshipLabel {
+    const builtIn = {
+      'friend': 'Arkadaş',
+      'family': 'Aile',
+      'partner': 'Partner',
+      'pet': 'Evcil hayvan',
+      'other': 'Diğer',
+    };
+    final r = person.relationship;
+    return builtIn[r] ??
+        BondsCategoriesService.prettyLabelForSlug(
+          r.replaceAll('-', '_'),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +131,7 @@ class PersonProfilePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Bond warmth',
+                              'Bağ sıcaklığı',
                               style: tt.titleSmall?.copyWith(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
@@ -129,7 +139,7 @@ class PersonProfilePage extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Amber when things are light; shifts toward teal as the bond grows. Numbers hidden on purpose.',
+                              'Hafifken kehribar tonlarına yakın; bağ güçlendikçe turkuaza kayar. Sayılar bilinçli olarak gizli.',
                               style: tt.bodySmall?.copyWith(
                                 color: AppPalette.mutedNav,
                                 height: 1.35,
@@ -144,7 +154,7 @@ class PersonProfilePage extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Recent activity',
+                      'Son aktiviteler',
                       style: tt.titleMedium?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
@@ -155,7 +165,7 @@ class PersonProfilePage extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Placeholder — history will sync here later.',
+                      'Örnek metin — geçmiş buraya senkron olacak.',
                       style: tt.bodySmall?.copyWith(
                         color: AppPalette.mutedNav,
                       ),
@@ -204,19 +214,19 @@ class PersonProfilePage extends StatelessWidget {
 
 const _placeholderActivities = <({String title, String subtitle, String when})>[
   (
-    title: 'Coffee & catch-up',
-    subtitle: 'Connection',
-    when: '3 days ago',
+    title: 'Kahve & sohbet',
+    subtitle: 'Bağ',
+    when: '3 gün önce',
   ),
   (
-    title: 'Evening walk',
-    subtitle: 'Movement',
-    when: '1 week ago',
+    title: 'Akşam yürüyüşü',
+    subtitle: 'Hareket',
+    when: '1 hafta önce',
   ),
   (
-    title: 'Quick call',
-    subtitle: 'Check-in',
-    when: '2 weeks ago',
+    title: 'Kısa arama',
+    subtitle: 'Kontrol',
+    when: '2 hafta önce',
   ),
 ];
 

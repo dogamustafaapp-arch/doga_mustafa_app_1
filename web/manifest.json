@@ -1,11 +1,11 @@
 {
-    "name": "doga_mustafa_app_1",
-    "short_name": "doga_mustafa_app_1",
+    "name": "Bağlar",
+    "short_name": "Bağlar",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Bağlar — ilişki ve aktivite takibi.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

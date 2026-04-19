@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
         return AlertDialog(
           backgroundColor: AppPalette.cardGrey,
           title: Text(
-            'New category',
+            'Yeni kategori',
             style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
             textCapitalization: TextCapitalization.words,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
-              hintText: 'e.g. Work, Neighbors',
+              hintText: 'örn. İş, Komşular',
               hintStyle: TextStyle(color: AppPalette.mutedNav.withValues(alpha: 0.8)),
               filled: true,
               fillColor: AppPalette.charcoal,
@@ -141,11 +141,11 @@ class _HomePageState extends State<HomePage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(ctx),
-              child: Text('Cancel', style: TextStyle(color: AppPalette.mutedNav)),
+              child: Text('İptal', style: TextStyle(color: AppPalette.mutedNav)),
             ),
             FilledButton(
               onPressed: () => Navigator.pop(ctx, controller.text),
-              child: const Text('Add'),
+              child: const Text('Ekle'),
             ),
           ],
         );
@@ -199,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                     clipBehavior: Clip.none,
                     children: [
                       Text(
-                        'Bonds',
+                        'Bağlar',
                         style: tt.titleLarge?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
@@ -214,7 +214,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              'PREMIUM',
+                              'PREMİUM',
                               style: tt.labelSmall?.copyWith(
                                 fontWeight: FontWeight.w700,
                                 letterSpacing: 1.2,
@@ -380,11 +380,11 @@ class _CategorySearchRow extends StatelessWidget {
   final VoidCallback onAddCategory;
 
   static const _builtIn = <String, String>{
-    'all': 'All',
-    'family': 'Family',
-    'friends': 'Friends',
-    'pets': 'Pets',
-    'favorites': 'Favorites',
+    'all': 'Tümü',
+    'family': 'Aile',
+    'friends': 'Arkadaşlar',
+    'pets': 'Evcil hayvanlar',
+    'favorites': 'Favoriler',
   };
 
   @override
@@ -559,7 +559,7 @@ class _BondsSearchField extends StatelessWidget {
           ),
           cursorColor: AppPalette.blueGrad,
           decoration: InputDecoration(
-            hintText: 'Search by name',
+            hintText: 'İsme göre ara',
             hintStyle: tt.bodyMedium?.copyWith(
               color: AppPalette.mutedNav.withValues(alpha: 0.65),
               fontWeight: FontWeight.w500,
@@ -580,7 +580,7 @@ class _BondsSearchField extends StatelessWidget {
                       color: AppPalette.mutedNav.withValues(alpha: 0.85),
                       size: 20,
                     ),
-                    tooltip: 'Clear',
+                    tooltip: 'Temizle',
                   )
                 : null,
             border: OutlineInputBorder(
@@ -636,7 +636,7 @@ class _NoSearchResultsHint extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'No matches',
+              'Sonuç yok',
               style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
@@ -646,8 +646,8 @@ class _NoSearchResultsHint extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               query.isEmpty
-                  ? 'Try a different search.'
-                  : 'Nobody matches “$query”. Try another name.',
+                  ? 'Farklı bir arama deneyin.'
+                  : '“$query” ile eşleşen yok. Başka bir isim deneyin.',
               style: textTheme.bodyMedium?.copyWith(
                 color: AppPalette.mutedNav,
                 height: 1.4,
@@ -676,26 +676,26 @@ class _EmptyCategoryHint extends StatelessWidget {
     String body;
     switch (categoryId) {
       case 'favorites':
-        title = 'No favorites yet';
-        body = 'Tap the star on a bond to add them here.';
+        title = 'Henüz favori yok';
+        body = 'Bir bağdaki yıldıza dokunarak buraya ekleyebilirsin.';
         break;
       case 'friends':
-        title = 'No friends or partners';
+        title = 'Arkadaş veya partner yok';
         body =
-            'When adding someone, choose Friend or Partner (add-person icon at the top).';
+            'Kişi eklerken Arkadaş veya Partner seç (üstteki kişi ekle simgesi).';
         break;
       case 'pets':
-        title = 'No pets';
-        body = 'When adding someone, set relationship to Pet.';
+        title = 'Evcil hayvan yok';
+        body = 'Kişi eklerken ilişkiyi Evcil hayvan olarak ayarla.';
         break;
       case 'family':
-        title = 'No family';
-        body = 'When adding someone, set relationship to Family.';
+        title = 'Aile üyesi yok';
+        body = 'Kişi eklerken ilişkiyi Aile olarak ayarla.';
         break;
       default:
-        title = 'No one in this category';
+        title = 'Bu kategoride kimse yok';
         body =
-            'Assign this category when adding a person, or pick another filter.';
+            'Kişi eklerken bu kategoriyi ata veya başka bir filtre seç.';
     }
 
     return Center(
@@ -792,7 +792,7 @@ class _EmptyBondsHint extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Text(
-              'No bonds yet',
+              'Henüz bağ yok',
               style: textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
@@ -801,7 +801,7 @@ class _EmptyBondsHint extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Add someone with the add-person icon on the top right, then log activities from the center button.',
+              'Sağ üstteki kişi ekle simgesiyle biri ekle, aktiviteleri ortadaki düğmeden kaydet.',
               style: textTheme.bodyMedium?.copyWith(
                 color: AppPalette.mutedNav,
                 height: 1.4,
@@ -907,7 +907,7 @@ class _BondCard extends StatelessWidget {
           ),
           IconButton(
             onPressed: onFavoriteTap,
-            tooltip: isFavorite ? 'Remove favorite' : 'Add favorite',
+            tooltip: isFavorite ? 'Favorilerden çıkar' : 'Favorilere ekle',
             style: IconButton.styleFrom(
               foregroundColor:
                   isFavorite ? AppPalette.ringProgress : AppPalette.mutedNav,

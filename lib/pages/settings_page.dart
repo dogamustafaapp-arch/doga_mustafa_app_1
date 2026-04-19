@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
 
-/// Settings and account — placeholder rows; session / legal copy to be wired later.
+/// Ayarlar ve hesap — satırlar yer tutucu; oturum / metinler sonra bağlanacak.
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
   void _soon(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('This section is coming soon.')),
+      const SnackBar(content: Text('Bu bölüm yakında eklenecek.')),
     );
   }
 
@@ -26,7 +26,7 @@ class SettingsPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Settings',
+          'Ayarlar',
           style: tt.titleLarge?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w600,
@@ -38,35 +38,35 @@ class SettingsPage extends StatelessWidget {
         children: [
           _SettingsTile(
             icon: Icons.notifications_outlined,
-            title: 'Notifications',
-            subtitle: 'Reminders and digests',
+            title: 'Bildirimler',
+            subtitle: 'Hatırlatıcılar ve özetler',
             onTap: () => _soon(context),
           ),
           _SettingsTile(
             icon: Icons.lock_outline_rounded,
-            title: 'Privacy',
-            subtitle: 'Data and visibility',
+            title: 'Gizlilik',
+            subtitle: 'Veri ve görünürlük',
             onTap: () => _soon(context),
           ),
           _SettingsTile(
             icon: Icons.description_outlined,
-            title: 'Privacy policy',
+            title: 'Gizlilik politikası',
             onTap: () => _soon(context),
           ),
           _SettingsTile(
             icon: Icons.gavel_rounded,
-            title: 'Terms of use',
+            title: 'Kullanım koşulları',
             onTap: () => _soon(context),
           ),
           _SettingsTile(
             icon: Icons.help_outline_rounded,
-            title: 'Help & support',
+            title: 'Yardım ve destek',
             onTap: () => _soon(context),
           ),
           _SettingsTile(
             icon: Icons.info_outline_rounded,
-            title: 'About',
-            subtitle: 'Version 1.0 (preview)',
+            title: 'Hakkında',
+            subtitle: 'Sürüm 1.0 (önizleme)',
             onTap: () => _soon(context),
           ),
           const SizedBox(height: 16),
@@ -80,7 +80,7 @@ class SettingsPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
               icon: const Icon(Icons.logout_rounded, size: 20),
-              label: const Text('Log out'),
+              label: const Text('Çıkış yap'),
             ),
           ),
         ],

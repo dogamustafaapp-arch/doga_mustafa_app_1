@@ -71,7 +71,7 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Vote',
+                'Oy ver',
                 style: tt.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.5,
@@ -80,7 +80,7 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Pick who you were with, what you did, and how it felt (1–5).',
+                'Kiminle olduğunu, ne yaptığını ve nasıl hissettiğini (1–5) seç.',
                 style: tt.bodyMedium?.copyWith(
                   color: AppPalette.mutedNav,
                   height: 1.4,
@@ -90,13 +90,13 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               DropdownButtonFormField<String?>(
                 value: dropdownValue,
                 decoration: const InputDecoration(
-                  labelText: 'Who',
+                  labelText: 'Kim',
                   prefixIcon: Icon(Icons.person_outline_rounded),
                 ),
                 items: [
                   const DropdownMenuItem<String?>(
                     value: null,
-                    child: Text('Choose someone'),
+                    child: Text('Birini seç'),
                   ),
                   ...people.map(
                     (p) => DropdownMenuItem(
@@ -110,14 +110,14 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               const SizedBox(height: 16),
               TextField(
                 decoration: const InputDecoration(
-                  labelText: 'Activity',
-                  hintText: 'e.g. Coffee, walk',
+                  labelText: 'Aktivite',
+                  hintText: 'örn. Kahve, yürüyüş',
                   prefixIcon: Icon(Icons.celebration_outlined),
                 ),
               ),
               const SizedBox(height: 24),
               Text(
-                'How was it?',
+                'Nasıldı?',
                 style: tt.titleSmall?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -125,7 +125,7 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               ),
               const SizedBox(height: 4),
               Text(
-                '1 = not great · 5 = amazing',
+                '1 = pek iyi değil · 5 = harika',
                 style: tt.bodySmall?.copyWith(color: AppPalette.mutedNav),
               ),
               const SizedBox(height: 14),
@@ -151,7 +151,7 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               FilledButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.thumb_up_rounded),
-                label: const Text('Save vote'),
+                label: const Text('Oyu kaydet'),
               ),
             ],
           ),

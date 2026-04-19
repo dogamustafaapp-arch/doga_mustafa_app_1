@@ -24,11 +24,11 @@ class _AddPersonPageState extends State<AddPersonPage> {
   bool _isAdding = false;
 
   static const List<({String value, String label})> _relationships = [
-    (value: 'friend', label: 'Friend'),
-    (value: 'family', label: 'Family'),
+    (value: 'friend', label: 'Arkadaş'),
+    (value: 'family', label: 'Aile'),
     (value: 'partner', label: 'Partner'),
-    (value: 'pet', label: 'Pet'),
-    (value: 'other', label: 'Other'),
+    (value: 'pet', label: 'Evcil hayvan'),
+    (value: 'other', label: 'Diğer'),
   ];
 
   @override
@@ -42,7 +42,7 @@ class _AddPersonPageState extends State<AddPersonPage> {
     final relationship = _relationship ?? 'other';
     if (name.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a name')),
+        const SnackBar(content: Text('Lütfen bir isim girin')),
       );
       return;
     }
@@ -53,20 +53,20 @@ class _AddPersonPageState extends State<AddPersonPage> {
         relationship: relationship,
       ).timeout(
         const Duration(seconds: 15),
-        onTimeout: () => throw TimeoutException('Add timed out'),
+        onTimeout: () => throw TimeoutException('Zaman aşımı'),
       );
       if (!mounted) return;
       _nameController.clear();
       setState(() => _relationship = null);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Person added')),
+        const SnackBar(content: Text('Kişi eklendi')),
       );
     } on TimeoutException {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'Request timed out. Check your connection and try again.',
+              'İstek zaman aşımına uğradı. Bağlantınızı kontrol edip tekrar deneyin.',
             ),
           ),
         );
@@ -74,7 +74,7 @@ class _AddPersonPageState extends State<AddPersonPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to add: $e')),
+          SnackBar(content: Text('Eklenemedi: $e')),
         );
       }
     } finally {
@@ -97,7 +97,7 @@ class _AddPersonPageState extends State<AddPersonPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Add person',
+          'Kişi ekle',
           style: tt.titleLarge?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w600,
@@ -112,7 +112,7 @@ class _AddPersonPageState extends State<AddPersonPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Add someone you spend time with',
+                'Zaman geçirdiğin biri ekle',
                 style: tt.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
                   letterSpacing: -0.4,
@@ -121,7 +121,7 @@ class _AddPersonPageState extends State<AddPersonPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Log activity scores from the center button.',
+                'Aktivite puanlarını ortadaki düğmeden kaydedebilirsin.',
                 style: tt.bodyMedium?.copyWith(
                   color: AppPalette.mutedNav,
                   height: 1.4,
@@ -132,8 +132,8 @@ class _AddPersonPageState extends State<AddPersonPage> {
                 controller: _nameController,
                 textCapitalization: TextCapitalization.words,
                 decoration: const InputDecoration(
-                  labelText: 'Name',
-                  hintText: 'e.g. Alex',
+                  labelText: 'İsim',
+                  hintText: 'örn. Alex',
                   prefixIcon: Icon(Icons.person_outline_rounded),
                 ),
               ),
@@ -141,13 +141,13 @@ class _AddPersonPageState extends State<AddPersonPage> {
               DropdownButtonFormField<String?>(
                 value: _relationship,
                 decoration: const InputDecoration(
-                  labelText: 'Relationship',
+                  labelText: 'İlişki',
                   prefixIcon: Icon(Icons.favorite_outline_rounded),
                 ),
                 items: [
                   const DropdownMenuItem<String?>(
                     value: null,
-                    child: Text('Choose relationship'),
+                    child: Text('İlişki seç'),
                   ),
                   ..._relationships.map(
                     (r) => DropdownMenuItem<String?>(
@@ -179,7 +179,7 @@ class _AddPersonPageState extends State<AddPersonPage> {
                         ),
                       )
                     : const Icon(Icons.add_rounded),
-                label: Text(_isAdding ? 'Adding…' : 'Add to list'),
+                label: Text(_isAdding ? 'Ekleniyor…' : 'Listeye ekle'),
               ),
             ],
           ),
