@@ -65,7 +65,9 @@ class _AddPersonPageState extends State<AddPersonPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Request timed out. Check connection or try again.'),
+            content: Text(
+              'Request timed out. Check your connection and try again.',
+            ),
           ),
         );
       }
@@ -83,27 +85,43 @@ class _AddPersonPageState extends State<AddPersonPage> {
   @override
   Widget build(BuildContext context) {
     final tt = Theme.of(context).textTheme;
-    final bottomInset = MediaQuery.paddingOf(context).bottom + 88;
+    final bottomPad = MediaQuery.paddingOf(context).bottom + 28;
 
     return Scaffold(
       backgroundColor: AppPalette.charcoal,
+      appBar: AppBar(
+        backgroundColor: AppPalette.charcoal,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'Add person',
+          style: tt.titleLarge?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
       body: SafeArea(
+        top: false,
         child: SingleChildScrollView(
-          padding: EdgeInsets.fromLTRB(24, 20, 24, bottomInset),
+          padding: EdgeInsets.fromLTRB(24, 20, 24, bottomPad),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Manage',
-                style: tt.headlineMedium?.copyWith(
+                'Add someone you spend time with',
+                style: tt.headlineSmall?.copyWith(
                   fontWeight: FontWeight.w700,
-                  letterSpacing: -0.5,
+                  letterSpacing: -0.4,
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Add someone you spend time with. Rate activities from the center button.',
+                'Log activity scores from the center button.',
                 style: tt.bodyMedium?.copyWith(
                   color: AppPalette.mutedNav,
                   height: 1.4,
@@ -120,21 +138,25 @@ class _AddPersonPageState extends State<AddPersonPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<String?>(
                 value: _relationship,
                 decoration: const InputDecoration(
                   labelText: 'Relationship',
                   prefixIcon: Icon(Icons.favorite_outline_rounded),
                 ),
                 items: [
+                  const DropdownMenuItem<String?>(
+                    value: null,
+                    child: Text('Choose relationship'),
+                  ),
                   ..._relationships.map(
-                    (r) => DropdownMenuItem(
+                    (r) => DropdownMenuItem<String?>(
                       value: r.value,
                       child: Text(r.label),
                     ),
                   ),
                   ...widget.customRelationshipSlugs.map(
-                    (slug) => DropdownMenuItem(
+                    (slug) => DropdownMenuItem<String?>(
                       value: slug,
                       child: Text(
                         BondsCategoriesService.prettyLabelForSlug(slug),

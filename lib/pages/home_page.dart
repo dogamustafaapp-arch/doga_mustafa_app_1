@@ -1,8 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
+import '../bond_strength.dart';
 import '../data/person_model.dart';
 import '../services/bonds_categories_service.dart';
 import 'bonds_map_view.dart';
@@ -13,12 +12,16 @@ class HomePage extends StatefulWidget {
     required this.people,
     required this.onPersonTap,
     required this.customRelationshipSlugs,
+    required this.onAddPersonTap,
+    required this.onSettingsTap,
     this.onCustomCategoriesChanged,
   });
 
   final List<Person> people;
-  final void Function(String name) onPersonTap;
+  final void Function(Person person) onPersonTap;
   final List<String> customRelationshipSlugs;
+  final VoidCallback onAddPersonTap;
+  final VoidCallback onSettingsTap;
   final Future<void> Function()? onCustomCategoriesChanged;
 
   static List<Person> sortedByScore(List<Person> people) {
@@ -188,7 +191,7 @@ class _HomePageState extends State<HomePage> {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -202,23 +205,49 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Positioned(
                       right: 0,
-                      child: ShaderMask(
-                        blendMode: BlendMode.srcIn,
-                        shaderCallback: (bounds) => const LinearGradient(
-                          colors: [
-                            AppPalette.purpleGrad,
-                            AppPalette.blueGrad,
-                          ],
-                        ).createShader(bounds),
-                        child: Text(
-                          'PREMIUM',
-                          style: tt.labelSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 1.2,
-                            color: Colors.white,
-                            fontSize: 10,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'PREMIUM',
+                            style: tt.labelSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 1.2,
+                              color: AppPalette.purpleGrad,
+                              fontSize: 10,
+                            ),
                           ),
-                        ),
+                          const SizedBox(width: 2),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: widget.onAddPersonTap,
+                              borderRadius: BorderRadius.circular(22),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: _InstagramStyleAddPersonIcon(
+                                  color: Colors.white.withValues(alpha: 0.92),
+                                  accent: AppPalette.tealNav,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: widget.onSettingsTap,
+                              borderRadius: BorderRadius.circular(22),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: Icon(
+                                  Icons.more_vert_rounded,
+                                  color: Colors.white.withValues(alpha: 0.88),
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -308,7 +337,7 @@ class _HomePageState extends State<HomePage> {
                       name: p.name,
                       score: p.score,
                       isFavorite: _favoriteIds.contains(p.id),
-                      onTap: () => widget.onPersonTap(p.name),
+                      onTap: () => widget.onPersonTap(p),
                       onFavoriteTap: () => _toggleFavorite(p.id),
                     );
                   },
@@ -482,7 +511,7 @@ class _CategoryChip extends StatelessWidget {
                   color: selected ? AppPalette.blueGrad : AppPalette.mutedNav,
                 )
               : Text(
-                  label!,
+                  label ?? '',
                   style: tt.labelLarge?.copyWith(
                     fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                     fontSize: 13,
@@ -646,20 +675,21 @@ class _EmptyCategoryHint extends StatelessWidget {
         break;
       case 'friends':
         title = 'No friends or partners';
-        body = 'Add people as Friend or Partner under Manage.';
+        body =
+            'When adding someone, choose Friend or Partner (add-person icon at the top).';
         break;
       case 'pets':
         title = 'No pets';
-        body = 'Add someone with relationship Pet under Manage.';
+        body = 'When adding someone, set relationship to Pet.';
         break;
       case 'family':
         title = 'No family';
-        body = 'Add someone with relationship Family under Manage.';
+        body = 'When adding someone, set relationship to Family.';
         break;
       default:
         title = 'No one in this category';
         body =
-            'Assign this category when adding a person under Manage, or pick another filter.';
+            'Assign this category when adding a person, or pick another filter.';
     }
 
     return Center(
@@ -698,6 +728,44 @@ class _EmptyCategoryHint extends StatelessWidget {
   }
 }
 
+/// Header add-person control (outline person + small plus badge).
+class _InstagramStyleAddPersonIcon extends StatelessWidget {
+  const _InstagramStyleAddPersonIcon({
+    required this.color,
+    required this.accent,
+  });
+
+  final Color color;
+  final Color accent;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 26,
+      height: 26,
+      child: Stack(
+        clipBehavior: Clip.none,
+        alignment: Alignment.center,
+        children: [
+          Icon(Icons.person_outline_rounded, size: 24, color: color),
+          Positioned(
+            right: -3,
+            bottom: -3,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: AppPalette.charcoal,
+                shape: BoxShape.circle,
+              ),
+              padding: const EdgeInsets.all(1),
+              child: Icon(Icons.add_circle_rounded, size: 14, color: accent),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _EmptyBondsHint extends StatelessWidget {
   const _EmptyBondsHint({required this.textTheme});
 
@@ -727,7 +795,7 @@ class _EmptyBondsHint extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Add someone from Manage, then log activities from the center button.',
+              'Add someone with the add-person icon on the top right, then log activities from the center button.',
               style: textTheme.bodyMedium?.copyWith(
                 color: AppPalette.mutedNav,
                 height: 1.4,
@@ -762,15 +830,12 @@ class _BondCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final tt = Theme.of(context).textTheme;
     final initial = name.isNotEmpty ? name[0].toUpperCase() : '?';
-    const maxScore = 5.0;
-    final progress = (score / maxScore).clamp(0.0, 1.0);
-    final scoreLabel = score.toDouble().toStringAsFixed(1);
-
     return Material(
       color: AppPalette.cardGrey,
       borderRadius: BorderRadius.circular(22),
       clipBehavior: Clip.antiAlias,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: InkWell(
@@ -848,93 +913,21 @@ class _BondCard extends StatelessWidget {
               size: 26,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 14),
-            child: _ScoreRing(progress: progress, label: scoreLabel),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ScoreRing extends StatelessWidget {
-  const _ScoreRing({
-    required this.progress,
-    required this.label,
-  });
-
-  final double progress;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    final tt = Theme.of(context).textTheme;
-    const size = 54.0;
-
-    return SizedBox(
-      width: size,
-      height: size,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          CustomPaint(
-            size: const Size(size, size),
-            painter: _RingPainter(progress: progress),
-          ),
-          Text(
-            label,
-            style: tt.labelLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 13,
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Container(
+                width: 5,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: BondStrength.colorForScore(score),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
-  }
-}
-
-class _RingPainter extends CustomPainter {
-  _RingPainter({required this.progress});
-
-  final double progress;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = (size.shortestSide / 2) - 3;
-    const stroke = 3.2;
-
-    final track = Paint()
-      ..color = AppPalette.ringTrack
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
-      ..strokeCap = StrokeCap.round;
-
-    canvas.drawCircle(center, radius, track);
-
-    if (progress <= 0) return;
-
-    final arc = Paint()
-      ..color = AppPalette.ringProgress
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = stroke
-      ..strokeCap = StrokeCap.round;
-
-    final sweep = 2 * math.pi * progress;
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      -math.pi / 2,
-      sweep,
-      false,
-      arc,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant _RingPainter oldDelegate) {
-    return oldDelegate.progress != progress;
   }
 }

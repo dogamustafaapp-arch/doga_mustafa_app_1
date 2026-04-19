@@ -8,36 +8,24 @@ import 'package:flutter/material.dart';
 class BondsMapPreview extends StatelessWidget {
   const BondsMapPreview({super.key});
 
-  // TODO: Remove — temporary preview nodes (wire to Firestore scores later).
-  static const List<_MapSample> _samples = [
-    _MapSample(
-      name: 'Lil Bro',
-      score: 3,
-      variant: _NodeVariant.avatar,
-    ),
-    _MapSample(
-      name: 'Alex',
-      score: 5,
-      variant: _NodeVariant.dot,
-      dotColor: Color(0xFFE53935),
-    ),
-    _MapSample(
-      name: 'Casey',
-      score: 4,
-      variant: _NodeVariant.avatar,
-    ),
-    _MapSample(
-      name: 'Riley',
-      score: 2,
-      variant: _NodeVariant.dot,
-      dotColor: Color(0xFF7C4DFF),
-    ),
-    _MapSample(
-      name: 'Quinn',
-      score: 1,
-      variant: _NodeVariant.avatar,
-    ),
-  ];
+  static final List<_MapSample> _samples = _buildDemoSamples();
+
+  /// 30 placeholder avatars for layout preview (replace with real bonds later).
+  static List<_MapSample> _buildDemoSamples() {
+    return List.generate(30, (i) {
+      final hue = (i * 137.508) % 360.0;
+      final start = HSVColor.fromAHSV(1, hue, 0.48, 0.76).toColor();
+      final end = HSVColor.fromAHSV(1, (hue + 26) % 360, 0.52, 0.9).toColor();
+      final letter = String.fromCharCode(65 + (i % 26));
+      final suffix = 1 + i ~/ 26;
+      return _MapSample(
+        name: '$letter$suffix',
+        score: (i % 5) + 1,
+        avatarGradStart: start,
+        avatarGradEnd: end,
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +59,7 @@ class BondsMapPreview extends StatelessWidget {
         }
 
         final n = _samples.length;
+        final layoutScale = n > 10 ? math.min(1.0, 10 / n) : 1.0;
         final layouts = <_PlacedNode>[];
         for (var i = 0; i < n; i++) {
           final theta = -math.pi / 2 + (2 * math.pi * i) / n + 0.12;
@@ -107,11 +96,12 @@ class BondsMapPreview extends StatelessWidget {
                   (e) => _MapPersonNode(
                     key: ValueKey(e.sample.name),
                     name: e.sample.name,
-                    variant: e.sample.variant,
-                    dotColor: e.sample.dotColor,
+                    avatarGradStart: e.sample.avatarGradStart,
+                    avatarGradEnd: e.sample.avatarGradEnd,
                     centerX: e.cx,
                     centerY: e.cy,
                     textTheme: tt,
+                    layoutScale: layoutScale,
                   ),
                 ),
               ],
@@ -123,20 +113,18 @@ class BondsMapPreview extends StatelessWidget {
   }
 }
 
-enum _NodeVariant { avatar, dot }
-
 class _MapSample {
   const _MapSample({
     required this.name,
     required this.score,
-    required this.variant,
-    this.dotColor,
+    this.avatarGradStart,
+    this.avatarGradEnd,
   });
 
   final String name;
   final int score;
-  final _NodeVariant variant;
-  final Color? dotColor;
+  final Color? avatarGradStart;
+  final Color? avatarGradEnd;
 }
 
 class _PlacedNode {
@@ -207,34 +195,41 @@ class _MapPersonNode extends StatelessWidget {
   const _MapPersonNode({
     super.key,
     required this.name,
-    required this.variant,
-    required this.dotColor,
+    this.avatarGradStart,
+    this.avatarGradEnd,
     required this.centerX,
     required this.centerY,
     required this.textTheme,
+    this.layoutScale = 1.0,
   });
 
   final String name;
-  final _NodeVariant variant;
-  final Color? dotColor;
+  final Color? avatarGradStart;
+  final Color? avatarGradEnd;
   final double centerX;
   final double centerY;
   final TextTheme textTheme;
+  final double layoutScale;
 
   static const double _avatarR = 22;
-  static const double _dotR = 9;
 
   @override
   Widget build(BuildContext context) {
-    final nodeR = variant == _NodeVariant.avatar ? _avatarR : _dotR;
-    const labelHeight = 18.0;
-    const gap = 6.0;
-    final top = centerY - labelHeight - gap - nodeR;
+    final avatarR = _avatarR * layoutScale;
+    final labelHeight = 18.0 * layoutScale;
+    final gap = 6.0 * layoutScale;
+    final top = centerY - labelHeight - gap - avatarR;
+    final colW = 104 * layoutScale;
+    final nameFont = 12 * layoutScale;
+    final initialFont = 20 * layoutScale;
+
+    final gradStart = avatarGradStart ?? const Color(0xFF6366F1);
+    final gradEnd = avatarGradEnd ?? const Color(0xFFC084FC);
 
     return Positioned(
-      left: centerX - 52,
+      left: centerX - colW / 2,
       top: top,
-      width: 104,
+      width: colW,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -246,54 +241,34 @@ class _MapPersonNode extends StatelessWidget {
             style: (textTheme.labelLarge ?? const TextStyle()).copyWith(
               color: Colors.white.withValues(alpha: 0.95),
               fontWeight: FontWeight.w600,
-              fontSize: 12,
+              fontSize: nameFont,
               letterSpacing: 0.2,
             ),
           ),
           SizedBox(height: gap),
           Center(
-            child: variant == _NodeVariant.avatar
-                ? Container(
-                    width: _avatarR * 2,
-                    height: _avatarR * 2,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Color(0xFF6366F1),
-                          Color(0xFFC084FC),
-                        ],
-                      ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        name.isNotEmpty ? name[0].toUpperCase() : '?',
-                        style: (textTheme.titleMedium ?? const TextStyle())
-                            .copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(
-                    width: _dotR * 2,
-                    height: _dotR * 2,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: dotColor ?? Colors.redAccent,
-                      boxShadow: [
-                        BoxShadow(
-                          color: (dotColor ?? Colors.red)
-                              .withValues(alpha: 0.45),
-                          blurRadius: 8,
-                        ),
-                      ],
-                    ),
+            child: Container(
+              width: avatarR * 2,
+              height: avatarR * 2,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [gradStart, gradEnd],
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  name.isNotEmpty ? name[0].toUpperCase() : '?',
+                  style: (textTheme.titleMedium ?? const TextStyle()).copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontSize: initialFont,
                   ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

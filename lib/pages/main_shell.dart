@@ -9,6 +9,9 @@ import '../services/people_firestore_service.dart';
 import 'activity_vote_page.dart';
 import 'add_person_page.dart';
 import 'home_page.dart';
+import 'journal_page.dart';
+import 'person_profile_page.dart';
+import 'settings_page.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -19,7 +22,6 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
-  String? _selectedPersonForVote;
   List<Person> _people = [];
   List<String> _customRelSlugs = [];
   StreamSubscription<List<Person>>? _peopleSub;
@@ -50,24 +52,20 @@ class _MainShellState extends State<MainShell> {
     if (mounted) setState(() => _customRelSlugs = list);
   }
 
-  void _onPersonTap(String name) {
-    setState(() {
-      _selectedPersonForVote = name;
-      _currentIndex = 1;
-    });
+  void _onPersonTap(Person person) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => PersonProfilePage(person: person),
+      ),
+    );
   }
 
   void _onDestinationSelected(int index) {
-    setState(() {
-      _currentIndex = index;
-      if (index != 1) _selectedPersonForVote = null;
-    });
+    setState(() => _currentIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
-    final personNames = _people.map((p) => p.name).toList();
-
     return Scaffold(
       backgroundColor: AppPalette.charcoal,
       extendBody: true,
@@ -79,12 +77,25 @@ class _MainShellState extends State<MainShell> {
             onPersonTap: _onPersonTap,
             customRelationshipSlugs: _customRelSlugs,
             onCustomCategoriesChanged: _loadCustomRelationships,
+            onAddPersonTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => AddPersonPage(
+                    customRelationshipSlugs: _customRelSlugs,
+                  ),
+                ),
+              );
+            },
+            onSettingsTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const SettingsPage(),
+                ),
+              );
+            },
           ),
-          ActivityVotePage(
-            personNames: personNames,
-            initialPersonName: _selectedPersonForVote,
-          ),
-          AddPersonPage(customRelationshipSlugs: _customRelSlugs),
+          ActivityVotePage(people: _people),
+          const JournalPage(),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -179,8 +190,8 @@ class _BondsBottomBar extends StatelessWidget {
           Expanded(
             child: _NavSlot(
               selected: currentIndex == 2,
-              icon: Icons.menu_rounded,
-              label: 'Manage',
+              icon: Icons.auto_stories_rounded,
+              label: 'Journal',
               activeColor: AppPalette.tealNav,
               onTap: () => onSelect(2),
               textTheme: tt,

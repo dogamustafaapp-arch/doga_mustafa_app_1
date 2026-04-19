@@ -1,49 +1,66 @@
 import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
+import '../data/person_model.dart';
 
 class ActivityVotePage extends StatefulWidget {
   const ActivityVotePage({
     super.key,
-    required this.personNames,
-    this.initialPersonName,
+    required this.people,
+    this.initialPersonId,
   });
 
-  final List<String> personNames;
-  final String? initialPersonName;
+  final List<Person> people;
+  final String? initialPersonId;
 
   @override
   State<ActivityVotePage> createState() => _ActivityVotePageState();
 }
 
 class _ActivityVotePageState extends State<ActivityVotePage> {
-  String? _selectedPerson;
+  String? _selectedPersonId;
   int? _selectedScore;
 
   @override
   void initState() {
     super.initState();
-    if (widget.initialPersonName != null &&
-        widget.personNames.contains(widget.initialPersonName)) {
-      _selectedPerson = widget.initialPersonName;
+    _syncInitialSelection();
+  }
+
+  void _syncInitialSelection() {
+    final id = widget.initialPersonId;
+    if (id != null && widget.people.any((p) => p.id == id)) {
+      _selectedPersonId = id;
     }
   }
 
   @override
   void didUpdateWidget(ActivityVotePage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.initialPersonName != null &&
-        widget.initialPersonName != oldWidget.initialPersonName &&
-        widget.personNames.contains(widget.initialPersonName)) {
-      setState(() => _selectedPerson = widget.initialPersonName);
+    var next = _selectedPersonId;
+    if (next != null && !widget.people.any((p) => p.id == next)) {
+      next = null;
+    }
+    if (widget.initialPersonId != null &&
+        widget.initialPersonId != oldWidget.initialPersonId &&
+        widget.people.any((p) => p.id == widget.initialPersonId)) {
+      next = widget.initialPersonId;
+    }
+    if (next != _selectedPersonId) {
+      setState(() => _selectedPersonId = next);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final names = widget.personNames;
+    final people = widget.people;
     final tt = Theme.of(context).textTheme;
     final bottomInset = MediaQuery.paddingOf(context).bottom + 88;
+
+    final dropdownValue = _selectedPersonId != null &&
+            people.any((p) => p.id == _selectedPersonId)
+        ? _selectedPersonId
+        : null;
 
     return Scaffold(
       backgroundColor: AppPalette.charcoal,
@@ -71,7 +88,7 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
               ),
               const SizedBox(height: 28),
               DropdownButtonFormField<String?>(
-                value: _selectedPerson,
+                value: dropdownValue,
                 decoration: const InputDecoration(
                   labelText: 'Who',
                   prefixIcon: Icon(Icons.person_outline_rounded),
@@ -81,14 +98,14 @@ class _ActivityVotePageState extends State<ActivityVotePage> {
                     value: null,
                     child: Text('Choose someone'),
                   ),
-                  ...names.map(
-                    (name) => DropdownMenuItem(
-                      value: name,
-                      child: Text(name),
+                  ...people.map(
+                    (p) => DropdownMenuItem(
+                      value: p.id,
+                      child: Text(p.name),
                     ),
                   ),
                 ],
-                onChanged: (v) => setState(() => _selectedPerson = v),
+                onChanged: (v) => setState(() => _selectedPersonId = v),
               ),
               const SizedBox(height: 16),
               TextField(
