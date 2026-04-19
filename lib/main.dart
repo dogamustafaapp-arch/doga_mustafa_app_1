@@ -6,8 +6,6 @@ import 'app_theme.dart';
 import 'firebase_options.dart';
 import 'pages/main_shell.dart';
 
-//flutter run -d chrome
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {

@@ -192,65 +192,71 @@ class _HomePageState extends State<HomePage> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Text(
-                      'Bonds',
-                      style: tt.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        letterSpacing: 0.2,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    clipBehavior: Clip.none,
+                    children: [
+                      Text(
+                        'Bonds',
+                        style: tt.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          letterSpacing: 0.2,
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      right: 0,
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'PREMIUM',
-                            style: tt.labelSmall?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: 1.2,
-                              color: AppPalette.purpleGrad,
-                              fontSize: 10,
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        bottom: 0,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'PREMIUM',
+                              style: tt.labelSmall?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.2,
+                                color: AppPalette.purpleGrad,
+                                fontSize: 10,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 2),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: widget.onAddPersonTap,
-                              borderRadius: BorderRadius.circular(22),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: _InstagramStyleAddPersonIcon(
-                                  color: Colors.white.withValues(alpha: 0.92),
-                                  accent: AppPalette.tealNav,
+                            const SizedBox(width: 2),
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: widget.onAddPersonTap,
+                                borderRadius: BorderRadius.circular(22),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: _InstagramStyleAddPersonIcon(
+                                    color: Colors.white.withValues(alpha: 0.92),
+                                    accent: AppPalette.tealNav,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: widget.onSettingsTap,
-                              borderRadius: BorderRadius.circular(22),
-                              child: Padding(
-                                padding: const EdgeInsets.all(6),
-                                child: Icon(
-                                  Icons.more_vert_rounded,
-                                  color: Colors.white.withValues(alpha: 0.88),
-                                  size: 24,
+                            Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: widget.onSettingsTap,
+                                borderRadius: BorderRadius.circular(22),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6),
+                                  child: Icon(
+                                    Icons.more_vert_rounded,
+                                    color: Colors.white.withValues(alpha: 0.88),
+                                    size: 24,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -835,7 +841,7 @@ class _BondCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(22),
       clipBehavior: Clip.antiAlias,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: InkWell(
